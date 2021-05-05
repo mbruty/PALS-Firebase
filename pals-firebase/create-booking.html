@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col s12 m6">
+    <div class="card" style="width: 30vw; padding: 30px">
+      <span class="card-title">Create a booking</span>
+      <div class="card-content">
+        <div class="card-content">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="party-size" type="number" class="validate" />
+              <label for="party-size">Party Size</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="date" type="text" class="datepicker" />
+              <label for="date">Date of booking</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="time" type="text" class="timepicker" />
+              <label for="time">Time of booking</label>
+            </div>
+          </div>
+          <a onclick="handleBooking()" class="waves-effect waves-light btn"
+            ><i class="material-icons right">send</i>Create booking</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

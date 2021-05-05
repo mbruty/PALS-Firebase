@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <Firebase> -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+
+    <!-- </Firebase> -->
+
+    <!-- Compiled and minified CSS -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="codes.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PALS Firestore</title>
+  </head>
+  <body class="grey lighten-4">
+    <ul class="sidenav sidenav-fixed">
+      <li>
+        <div class="user-view">
+          <div class="background">
+            <img
+              src="https://media.istockphoto.com/photos/cozy-restaurant-for-gathering-with-friends-picture-id1159992039?k=6&m=1159992039&s=612x612&w=0&h=pDTW4WuDgsZL5wvMDmQF0STsON74d-ZhSR7EtMfksd8="
+            />
+          </div>
+          <h3 class="title">PALS Cafe</h3>
+        </div>
+      </li>
+      <li>
+        <a id="create-booking" href=""
+          ><i class="material-icons">add_box</i>Create a booking</a
+        >
+        <a id="view-bookings" href=""
+          ><i class="material-icons">restaurant</i>View Bookings</a
+        >
+        <a id="log-in" href=""
+          ><i class="material-icons">person</i>Log in / Sign up</a
+        >
+      </li>
+    </ul>
+    <div id="app"></div>
+  </body>
+</html>

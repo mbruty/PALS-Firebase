@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col s12 m6">
+    <div class="card" style="width: 30vw; padding: 30px">
+      <span class="card-title">Log-in or sign-up</span>
+      <div class="card-content">
+        <div class="card-tabs">
+          <ul class="tabs tabs-fixed-width">
+            <li class="tab"><a href="#log-in-tab">Log In</a></li>
+            <li class="tab"><a href="#sign-up-tab">Sign Up</a></li>
+          </ul>
+        </div>
+        <div class="card-content">
+          <div id="log-in-tab">
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="email-login" type="email" class="validate" />
+                <label for="email-login">Email</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="password-login" type="password" class="validate" />
+                <label for="password-login">Password</label>
+              </div>
+              <a onclick="handleLogIn()" class="waves-effect waves-light btn"
+                ><i class="material-icons right">send</i>log in</a
+              >
+            </div>
+          </div>
+          <div id="sign-up-tab">
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="name-signup" type="text" class="validate" />
+                <label for="name-signup">First Name</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="email-signup" type="email" class="validate" />
+                <label for="email-signup">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="password-signup" type="password" class="validate" />
+                <label for="password-signup">Password</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="password-confirm-signup" type="password" class="validate" />
+                <label for="password-confirm-signup">Password confirm</label>
+              </div>
+            </div>
+              <a onclick="handleSignUp()" class="waves-effect waves-light btn"
+                ><i class="material-icons right">send</i>Sign up</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

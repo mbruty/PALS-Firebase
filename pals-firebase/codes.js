@@ -15,77 +15,88 @@ const db = firebase.firestore();
 
 document.addEventListener("DOMContentLoaded", function () {
   registerLinks();
-  renderPage("home");
-  let id = window.localStorage.getItem("uid");
+  renderPage("home"); // Direct to home page on load
+  let id = window.localStorage.getItem("uid"); // Get a uid stored locally
   console.log(id);
-  if (id) uid = id;
+  if (id) uid = id; // If we have the uid, set it
 });
 
 function registerLinks() {
-  const links = document.querySelectorAll("a");
+  const links = document.querySelectorAll("a"); // Get all 'a' elements that are in the nav
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
-      e.preventDefault();
-      renderPage(link.id);
+      e.preventDefault(); // Prevent a page reload on click
+      renderPage(link.id); // Render the page with the link's id (i.e. "log-in")
     });
   });
 }
 
 async function renderPage(pageSlug) {
-  const page = await fetch(pageSlug + ".html");
-  let html = await page.text();
+  const page = await fetch(pageSlug + ".html"); // Fetch the corresponding html page for the page ("log-in" will get log-in.html)
+  let html = await page.text(); // Get the text from the response
   if (page.status === 404) {
+    // 404 - couldn't find the page
     html = "<h1>404 Page not found</h1>";
   }
-  window.history.pushState({ html, pageTitle: "PALS Cafe" }, "PALS Cafe", "");
-  document.getElementById("app").innerHTML = html;
+  window.history.pushState(
+    { html, pageTitle: "PALS Cafe" },
+    "PALS Cafe",
+    pageSlug
+  ); // Push the new page into the window's history, this will allow the user to go back
+  document.getElementById("app").innerHTML = html; // Get <div id="app"> and place the html from the loaded file into it
   if (pageSlug === "log-in") {
-    loginPageCodes();
+    loginPageCodes(); // Load the log in page logic
   }
   if (pageSlug === "create-booking") {
-    createBookingPageCodes();
+    createBookingPageCodes(); // Load the booking page logic
   }
   if (pageSlug == "view-bookings") {
-    setupBookings();
+    setupBookings(); // Load the view bookings page logic
   }
 }
 
 function setupBookings() {
-  db.collection("users")
-    .where("id", "==", uid)
+  db.collection("users") // Get the collection users
+    .where("id", "==", uid) // Where the id is equal to the current user id
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
+        // For each document returned (should only be one)
         const data = doc.data();
         console.log(doc.id, " => ", data);
-        document.getElementById("name").innerText = "Hello " + data.name;
+        document.getElementById("name").innerText = "Hello " + data.name; // Set the <h1>'s text to Hello name
         const table = document.getElementById("booking-body");
         data.booking.forEach((booking, idx) => {
-          const tr = document.createElement("tr");
-          const size = document.createElement("td");
-          size.innerText = booking.size;
-          const date = document.createElement("td");
-          date.innerText = booking.date.toDate().toDateString();
+          // For each booking
+          const tr = document.createElement("tr"); // Create a new table row
+          const size = document.createElement("td"); // Create the element that the size is going to be in
+          size.innerText = booking.size; // Set the text content of that td to the size
+          const date = document.createElement("td"); // Repeate for each element
+          date.innerText = booking.date.toDate().toDateString(); // Conver the object to a js date object and then convert that into a date string
           const time = document.createElement("td");
           time.innerText = booking.time;
-          const deleteBtn = document.createElement("i");
+          const deleteBtn = document.createElement("i"); // Create the delete icon
           deleteBtn.className = "material-icons";
           deleteBtn.innerText = "delete_forever";
           deleteBtn.addEventListener("click", () => {
-            data.booking.splice(idx, 1);
-            deleteBooking(data.booking);
+            // When the delete icon is clicked...
+            data.booking.splice(idx, 1); // Remove the item at the index
+            deleteBooking(data.booking); // Save the updated array
           });
 
+          // Add all the table elements to the row
           tr.appendChild(date);
           tr.appendChild(time);
           tr.appendChild(size);
           tr.appendChild(deleteBtn);
+          // Add the table row to the table
           table.appendChild(tr);
         });
       });
     });
 }
 
+// Handler for going back
 window.onpopstate = function (e) {
   if (e.state) {
     document.getElementById("app").innerHTML = e.state.html;
@@ -94,10 +105,11 @@ window.onpopstate = function (e) {
 };
 
 function loginPageCodes() {
-  M.Tabs.init(document.querySelector(".tabs"), {});
+  M.Tabs.init(document.querySelector(".tabs"), {}); // Init the material tabs component
 }
 
 function createBookingPageCodes() {
+  // init the time picker and date picker elements
   M.Timepicker.init(document.querySelectorAll(".timepicker"), {
     twelveHour: false,
   });
@@ -105,18 +117,19 @@ function createBookingPageCodes() {
 }
 
 function handleLogIn(e) {
+  // Get the email and password
   const login = document.getElementById("email-login").value;
   const pass = document.getElementById("password-login").value;
   console.log({ login, pass });
   firebase
-    .auth()
-    .signInWithEmailAndPassword(login, pass)
+    .auth() // Inialise firebase auth
+    .signInWithEmailAndPassword(login, pass) // Sign in with given username and password
     .then((userCredential) => {
       // Signed in
-      var user = userCredential.user;
+      var user = userCredential.user; // get the user from the returned object
       console.log(user);
-      uid = user.uid;
-      saveUid(uid);
+      uid = user.uid; // get the user id
+      saveUid(uid); // save the user id
       // ...
     })
     .catch((error) => {
@@ -127,6 +140,7 @@ function handleLogIn(e) {
 }
 
 function handleSignUp(e) {
+  // Get all the data from the form
   const name = document.getElementById("name-signup").value;
   const login = document.getElementById("email-signup").value;
   const pass = document.getElementById("password-signup").value;
@@ -138,13 +152,13 @@ function handleSignUp(e) {
   console.log({ login, pass, confpass, name });
   firebase
     .auth()
-    .createUserWithEmailAndPassword(login, pass)
+    .createUserWithEmailAndPassword(login, pass) // Sign up with email nad password
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
-      uid = user.uid;
-      saveUid(uid);
-      renderPage("create-booking");
+      uid = user.uid; // Get the user id
+      saveUid(uid); // save the user id
+      renderPage("create-booking"); // Go to the create booking page
       db.collection("users")
         .add({
           email: login,
@@ -162,12 +176,13 @@ function handleSignUp(e) {
 }
 
 function handleBooking() {
+  // Get all the form data
   const size = document.getElementById("party-size").value;
   const date = new Date(document.getElementById("date").value);
   const timeStr = document.getElementById("time").value;
   console.log(size, date, timeStr);
   db.collection("users")
-    .where("id", "==", uid)
+    .where("id", "==", uid) // Get the doccument containing the user's info
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -175,6 +190,7 @@ function handleBooking() {
         db.collection("users")
           .doc(doc.id)
           .update(
+            // Add the booking to the bookings array contained inside the user
             {
               booking: firebase.firestore.FieldValue.arrayUnion({
                 size: size,
